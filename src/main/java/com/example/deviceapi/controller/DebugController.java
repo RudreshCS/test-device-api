@@ -67,4 +67,27 @@ public class DebugController {
 			return ResponseEntity.status(500).body("Connectivity test failed: " + e.getMessage());
 		}
 	}
+
+	@GetMapping("/test/network-debug")
+	public ResponseEntity<Map<String, Object>> networkDebug() {
+		Map<String, Object> debug = new HashMap<>();
+
+		String[] endpoints = { "a3e57rgpwqspn6-ats.iot.ap-south-1.amazonaws.com", "8.8.8.8", // Google DNS
+				"1.1.1.1" // Cloudflare DNS
+		};
+
+		for (String endpoint : endpoints) {
+			try {
+				InetAddress address = InetAddress.getByName(endpoint);
+				boolean reachable = address.isReachable(5000);
+				debug.put(endpoint + "_reachable", reachable);
+				debug.put(endpoint + "_ip", address.getHostAddress());
+			} catch (Exception e) {
+				debug.put(endpoint + "_error", e.getMessage());
+			}
+		}
+
+		return ResponseEntity.ok(debug);
+	}
+
 }
