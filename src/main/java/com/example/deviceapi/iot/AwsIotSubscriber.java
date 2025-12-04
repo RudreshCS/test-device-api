@@ -1,5 +1,9 @@
 package com.example.deviceapi.iot;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -32,8 +36,13 @@ public class AwsIotSubscriber {
 	public void init() {
 		try {
 			System.out.println("Inside init ");
+			// Load certificates from environment variables
+			String deviceCert = System.getenv("DEVICE_CERTIFICATE");
+			String privateKey = System.getenv("PRIVATE_KEY");
+
+			// Create temporary files or use in-memory approach
 			AwsIotMqttConnectionBuilder builder = AwsIotMqttConnectionBuilder.newMtlsBuilderFromPath(
-					"src/main/resources/certs/device-certificate.pem.crt", "src/main/resources/certs/private.pem.key");
+					createTempFile(deviceCert, "device-cert.pem"), createTempFile(privateKey, "private-key.pem"));
 
 			builder.withEndpoint("a3e57rgpwqspn6-ats.iot.ap-south-1.amazonaws.com");
 			builder.withClientId("SpringBootSubscriber");
@@ -68,6 +77,13 @@ public class AwsIotSubscriber {
 	@Scheduled(fixedDelay = Long.MAX_VALUE)
 	public void keepRunning() {
 		System.out.println("Inside keepRunning");
+	}
+
+	private String createTempFile(String content, String filename) throws IOException {
+		Path tempFile = Files.createTempFile(filename, ".tmp");
+		Files.write(tempFile, content.getBytes());
+		tempFile.toFile().deleteOnExit();
+		return tempFile.toString();
 	}
 
 }
