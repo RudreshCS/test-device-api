@@ -35,12 +35,15 @@ public class AwsIotSubscriber {
 	@PostConstruct
 	public void init() {
 		try {
-			System.out.println("Inside init ");
-			// Load certificates from environment variables
+			System.out.println("Inside init");
+
 			String deviceCert = System.getenv("DEVICE_CERTIFICATE");
 			String privateKey = System.getenv("PRIVATE_KEY");
+			String topic = "test-topic";
 
-			// Create temporary files or use in-memory approach
+			System.out.println("deviceCert : -  \n" + deviceCert);
+			System.out.println("privateKey : -  \n" + privateKey);
+
 			AwsIotMqttConnectionBuilder builder = AwsIotMqttConnectionBuilder.newMtlsBuilderFromPath(
 					createTempFile(deviceCert, "device-cert.pem"), createTempFile(privateKey, "private-key.pem"));
 
@@ -52,13 +55,13 @@ public class AwsIotSubscriber {
 			connection.connect().get();
 
 			connection.subscribe("test", QualityOfService.AT_LEAST_ONCE, (message) -> {
-				System.out.println("Received message on topic: test");
+				System.out.println("Received message on topic: " + topic);
 
 				try {
 					String payload = new String(message.getPayload());
-					System.out.println("Payload : " + payload);
+					System.out.println("Payload : \n" + payload);
 					DeviceData deviceData = mapper.readValue(payload, DeviceData.class);
-					System.out.println("Parsed device data: " + deviceData);
+					System.out.println("Parsed device data: \n" + deviceData);
 					service.save(deviceData);
 					System.out.println("Successfully saved device data");
 				} catch (JsonProcessingException e) {
