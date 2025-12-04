@@ -1,22 +1,30 @@
 package com.example.deviceapi.controller;
 
-import com.example.deviceapi.model.DeviceData;
-import com.example.deviceapi.service.DeviceService;
-import jakarta.validation.Valid;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.deviceapi.model.DeviceData;
+import com.example.deviceapi.service.DeviceDataService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/devices")
 public class DeviceController {
 
-    private final DeviceService service;
+    private final DeviceDataService service;
 
-    public DeviceController(DeviceService service) {
+    public DeviceController(DeviceDataService service) {
         this.service = service;
     }
 

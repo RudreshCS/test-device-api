@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DeviceService {
+public class DeviceDataService {
 
     private final DeviceRepository repository;
 
-    public DeviceService(DeviceRepository repository) {
+    public DeviceDataService(DeviceRepository repository) {
         this.repository = repository;
     }
 
