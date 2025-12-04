@@ -3,6 +3,8 @@ package com.example.deviceapi.iot;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,8 +27,6 @@ public class AwsIotSubscriber {
 	private final ObjectMapper mapper = new ObjectMapper();
 
 	private final DeviceService service;
-
-	public DeviceData deviceData;
 
 	public AwsIotSubscriber(DeviceService service) {
 		this.service = service;
@@ -51,17 +51,20 @@ public class AwsIotSubscriber {
 			MqttClientConnection connection = builder.build();
 			connection.connect().get();
 
-			connection.subscribe("device/data", QualityOfService.AT_LEAST_ONCE, (message) -> {
-				String payload = new String(message.getPayload());
-				System.out.println("[IoT Message Test] " + payload);
-				System.out.println("Reading from mapper ");
+			connection.subscribe("test", QualityOfService.AT_LEAST_ONCE, (message) -> {
+				System.out.println("Received message on topic: test");
 
 				try {
-					deviceData = mapper.readValue(payload, DeviceData.class);
-					System.out.println("After Reading from mapper ");
+					String payload = new String(message.getPayload());
+					System.out.println("Payload : " + payload);
+					DeviceData deviceData = mapper.readValue(payload, DeviceData.class);
+					System.out.println("Parsed device data: " + deviceData);
 					service.save(deviceData);
-					System.out.println("After inserting");
+					System.out.println("Successfully saved device data");
 				} catch (JsonProcessingException e) {
+					System.err.println("JSON parsing error: " + e.getMessage());
+				} catch (Exception e) {
+					System.err.println("Unexpected error while processing data: " + e.getMessage());
 					e.printStackTrace();
 				}
 
@@ -70,6 +73,7 @@ public class AwsIotSubscriber {
 			System.out.println("Subscribed to device/data topic.");
 
 		} catch (Exception e) {
+			System.err.println("Unexpected error: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
