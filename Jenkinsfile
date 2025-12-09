@@ -24,11 +24,7 @@ pipeline {
             steps {
                 echo 'Checking out code from repository...'
                 checkout scm
-                script {
-                    env.GIT_COMMIT_MSG = bat(script: '@git log -1 --pretty=%%B', returnStdout: true).trim()
-                    env.GIT_AUTHOR = bat(script: '@git log -1 --pretty=%%an', returnStdout: true).trim()
-                }
-                echo "Commit: ${env.GIT_COMMIT_MSG} by ${env.GIT_AUTHOR}"
+                echo 'Code checkout completed'
             }
         }
         
