@@ -81,10 +81,11 @@ pipeline {
                     bat """
                         docker stop ${APP_NAME} 2>nul || echo Container not running
                         docker rm ${APP_NAME} 2>nul || echo Container does not exist
-                        docker run -d --name ${APP_NAME} -p 8080:8080 -e "MONGODB_URI=%MONGODB_URI%" ${APP_NAME}:latest
+                        docker run -d --name ${APP_NAME} -p 8080:8080 -e "MONGODB_URI=%MONGODB_URI%" -e "SPRING_PROFILES_ACTIVE=dev" ${APP_NAME}:latest
                     """
                 }
                 echo 'Application running on http://localhost:8080'
+                echo 'Swagger UI available at http://localhost:8080/swagger-ui.html'
             }
         }
     }
