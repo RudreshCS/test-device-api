@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         // Maven Configuration
-        MAVEN_HOME = tool 'Maven'
+        MAVEN_HOME = tool 'Maven-3.9'
         MAVEN_OPTS = '-Xmx1024m -XX:MaxPermSize=512m'
         
         // Docker Configuration
@@ -249,37 +249,15 @@ pipeline {
     }
     
     post {
-        always {
-            echo 'Cleaning up workspace...'
-            cleanWs()
-        }
         success {
             echo 'Pipeline completed successfully!'
-            emailext(
-                subject: "✅ SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                body: """
-                    <p>SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'</p>
-                    <p>Commit: ${env.GIT_COMMIT_MSG}</p>
-                    <p>Author: ${env.GIT_AUTHOR}</p>
-                    <p>Check console output at: <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>
-                """,
-                to: 'team@example.com',
-                mimeType: 'text/html'
-            )
+            // Email notifications disabled - configure SMTP in Jenkins to enable
+            // emailext(...)
         }
         failure {
             echo 'Pipeline failed!'
-            emailext(
-                subject: "❌ FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                body: """
-                    <p>FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'</p>
-                    <p>Commit: ${env.GIT_COMMIT_MSG}</p>
-                    <p>Author: ${env.GIT_AUTHOR}</p>
-                    <p>Check console output at: <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></p>
-                """,
-                to: 'team@example.com',
-                mimeType: 'text/html'
-            )
+            // Email notifications disabled - configure SMTP in Jenkins to enable
+            // emailext(...)
         }
     }
 }
