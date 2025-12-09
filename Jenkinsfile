@@ -65,6 +65,28 @@ pipeline {
                 }
             }
         }
+        
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                bat "docker build -t ${APP_NAME}:${BUILD_NUMBER} ."
+                bat "docker tag ${APP_NAME}:${BUILD_NUMBER} ${APP_NAME}:latest"
+            }
+        }
+        
+        stage('Run Docker Container') {
+            steps {
+                echo 'Running Docker container...'
+                script {
+                    bat """
+                        docker stop ${APP_NAME} 2>nul || echo Container not running
+                        docker rm ${APP_NAME} 2>nul || echo Container does not exist
+                        docker run -d --name ${APP_NAME} -p 8080:8080 -e MONGODB_URI=%MONGODB_URI% ${APP_NAME}:latest
+                    """
+                }
+                echo 'Application running on http://localhost:8080'
+            }
+        }
     }
     
     post {
