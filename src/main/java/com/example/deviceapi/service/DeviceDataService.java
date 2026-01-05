@@ -1,6 +1,6 @@
 package com.example.deviceapi.service;
 
-import com.example.deviceapi.model.DeviceData;
+import com.example.deviceapi.model.DeviceTelementry;
 import com.example.deviceapi.repository.DeviceRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +16,15 @@ public class DeviceDataService {
         this.repository = repository;
     }
 
-    public DeviceData save(DeviceData data) {
+    public DeviceTelementry save(DeviceTelementry data) {
         return repository.save(data);
     }
 
-    public Optional<DeviceData> findById(String id) {
+    public Optional<DeviceTelementry> findById(String id) {
         return repository.findById(id);
     }
 
-    public List<DeviceData> findAll() {
+    public List<DeviceTelementry> findAll() {
         return repository.findAll();
     }
 

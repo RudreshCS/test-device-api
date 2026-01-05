@@ -1,6 +1,6 @@
 package com.example.deviceapi.iot;
 
-import com.example.deviceapi.model.DeviceData;
+import com.example.deviceapi.model.DeviceTelementry;
 import com.example.deviceapi.service.DeviceDataService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -178,7 +178,7 @@ public class AwsIotSubscriber {
 			// Only process JSON if it looks like device data
 			if (payload.contains("temperature") || payload.contains("humidity")) {
 				try {
-					DeviceData deviceData = mapper.readValue(payload, DeviceData.class);
+					DeviceTelementry deviceData = mapper.readValue(payload, DeviceTelementry.class);
 					logger.info("🔄 Parsed device data for message #{}", count);
 
 					service.save(deviceData);

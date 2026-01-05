@@ -1,47 +1,95 @@
 package com.example.deviceapi.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.time.Instant;
-
-@Document(collection = "device_data")
 public class DeviceData {
 
-    @Id
-    private String id;
+	private String externalTemperature;
+	private String rainSensor;
+	private String networkType;
+	private String gpsLocation;
+	private String deviceId;
+	private String sdCardPresent;
+	private String sdCardMemory;
+	private String batteryStatus;
+	
+	public DeviceData() {
+		
+	}
 
-    @NotBlank(message = "device_id cannot be blank")
-    private String device_id;
+	public DeviceData(String externalTemperature, String rainSensor, String networkType, String gpsLocation,
+			String deviceId, String sdCardPresent, String sdCardMemory, String batteryStatus) {
+		super();
+		this.externalTemperature = externalTemperature;
+		this.rainSensor = rainSensor;
+		this.networkType = networkType;
+		this.gpsLocation = gpsLocation;
+		this.deviceId = deviceId;
+		this.sdCardPresent = sdCardPresent;
+		this.sdCardMemory = sdCardMemory;
+		this.batteryStatus = batteryStatus;
+	}
 
-    @NotNull(message = "temperature is required")
-    private Double temperature;
+	public String getExternalTemperature() {
+		return externalTemperature;
+	}
 
-    @NotNull(message = "weight is required")
-    @Positive(message = "weight must be positive")
-    private Double weight;
+	public void setExternalTemperature(String externalTemperature) {
+		this.externalTemperature = externalTemperature;
+	}
 
-    @NotNull(message = "timestamp is required")
-    private String timestamp;
+	public String getRainSensor() {
+		return rainSensor;
+	}
 
-    public DeviceData() {}
+	public void setRainSensor(String rainSensor) {
+		this.rainSensor = rainSensor;
+	}
 
-    // getters and setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+	public String getNetworkType() {
+		return networkType;
+	}
 
-    public String getDevice_id() { return device_id; }
-    public void setDevice_id(String device_id) { this.device_id = device_id; }
+	public void setNetworkType(String networkType) {
+		this.networkType = networkType;
+	}
 
-    public Double getTemperature() { return temperature; }
-    public void setTemperature(Double temperature) { this.temperature = temperature; }
+	public String getGpsLocation() {
+		return gpsLocation;
+	}
 
-    public Double getWeight() { return weight; }
-    public void setWeight(Double weight) { this.weight = weight; }
+	public void setGpsLocation(String gpsLocation) {
+		this.gpsLocation = gpsLocation;
+	}
 
-    public String getTimestamp() { return timestamp; }
-    public void setTimestamp(String timestamp) { this.timestamp = timestamp; }
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+
+	public String getSdCardPresent() {
+		return sdCardPresent;
+	}
+
+	public void setSdCardPresent(String sdCardPresent) {
+		this.sdCardPresent = sdCardPresent;
+	}
+
+	public String getSdCardMemory() {
+		return sdCardMemory;
+	}
+
+	public void setSdCardMemory(String sdCardMemory) {
+		this.sdCardMemory = sdCardMemory;
+	}
+
+	public String getBatteryStatus() {
+		return batteryStatus;
+	}
+
+	public void setBatteryStatus(String batteryStatus) {
+		this.batteryStatus = batteryStatus;
+	}
+
 }
