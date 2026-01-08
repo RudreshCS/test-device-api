@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.deviceapi.model.DeviceTelementry;
+import com.example.deviceapi.model.UnitData;
 import com.example.deviceapi.service.DeviceDataService;
 
 import jakarta.validation.Valid;
@@ -61,5 +62,12 @@ public class DeviceController {
 			service.deleteById(id);
 			return ResponseEntity.noContent().<Void>build();
 		}).orElseGet(() -> ResponseEntity.notFound().build());
+	}
+
+	@GetMapping("/unitId/{unitId}")
+	public ResponseEntity<UnitData> groupByUnitIdId(@PathVariable("unitId") String unitId) {
+
+		return service.groupByUnitId(unitId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
 	}
 }
