@@ -1,15 +1,14 @@
 package com.example.deviceapi.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.example.deviceapi.mapper.DeviceTelementryGroupMapper;
 import com.example.deviceapi.model.DeviceTelementry;
 import com.example.deviceapi.model.UnitData;
 import com.example.deviceapi.repository.DeviceRepository;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DeviceDataService {

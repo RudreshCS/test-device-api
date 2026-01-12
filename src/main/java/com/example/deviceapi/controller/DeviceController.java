@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.deviceapi.model.DeviceTelementry;
+import com.example.deviceapi.model.GroupedDeviceResponse;
 import com.example.deviceapi.model.UnitData;
+import com.example.deviceapi.service.DeviceAggregationService;
 import com.example.deviceapi.service.DeviceDataService;
 
 import jakarta.validation.Valid;
@@ -24,9 +26,12 @@ import jakarta.validation.Valid;
 public class DeviceController {
 
 	private final DeviceDataService service;
+	
+	private final DeviceAggregationService deviceAggregationService;
 
-	public DeviceController(DeviceDataService service) {
+	public DeviceController(DeviceDataService service, DeviceAggregationService deviceAggregationService) {
 		this.service = service;
+		this.deviceAggregationService = deviceAggregationService;
 	}
 
 	@PostMapping
@@ -63,6 +68,11 @@ public class DeviceController {
 			return ResponseEntity.noContent().<Void>build();
 		}).orElseGet(() -> ResponseEntity.notFound().build());
 	}
+	
+	@GetMapping("/grouped")
+    public List<GroupedDeviceResponse> getGroupedDevices() {
+        return deviceAggregationService.getGroupedUnits();
+    }
 
 	@GetMapping("/unitId/{unitId}")
 	public ResponseEntity<UnitData> groupByUnitIdId(@PathVariable("unitId") String unitId) {
